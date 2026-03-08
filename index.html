@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Kroma Paint v1.0.8</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div id="appRoot" class="d-flex flex-column h-100">
+  <nav class="navbar navbar-expand-lg navbar-light mac-menubar px-2 py-1">
+    <div class="dropdown me-1">
+      <button class="btn mac-menu-btn dropdown-toggle" data-bs-toggle="dropdown">File</button>
+      <ul class="dropdown-menu mac-dropdown">
+        <li><button class="dropdown-item" id="miNew">New Project...</button></li>
+        <li><button class="dropdown-item" id="miOpenProject">Load Project...</button></li>
+        <li><button class="dropdown-item" id="miOpenImage">Select CoCo Disk...</button></li>
+        <li><button class="dropdown-item" id="miReopenDsk" disabled>Selected: none</button></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><button class="dropdown-item" id="miSave">Save Project...</button></li>
+        <li><button class="dropdown-item" id="miExportImage">Export Image...</button></li>
+      </ul>
+    </div>
+    <div class="dropdown me-1">
+      <button class="btn mac-menu-btn dropdown-toggle" data-bs-toggle="dropdown">Edit</button>
+      <ul class="dropdown-menu mac-dropdown">
+        <li><button class="dropdown-item" id="miUndo">Undo</button></li>
+        <li><button class="dropdown-item" id="miRedo">Redo</button></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><button class="dropdown-item" id="miCut">Cut</button></li>
+        <li><button class="dropdown-item" id="miCopy">Copy</button></li>
+        <li><button class="dropdown-item" id="miPaste">Paste</button></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><button class="dropdown-item" id="miClipFlipH">Flip Clipboard H</button></li>
+        <li><button class="dropdown-item" id="miClipFlipV">Flip Clipboard V</button></li>
+        <li><button class="dropdown-item" id="miClipRotate">Rotate Clipboard 90°</button></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><button class="dropdown-item" id="miClear">Clear Layer</button></li>
+      </ul>
+    </div>
+
+    <div class="dropdown me-1">
+      <button class="btn mac-menu-btn dropdown-toggle" data-bs-toggle="dropdown">Tools</button>
+      <ul class="dropdown-menu mac-dropdown">
+        <li><button class="dropdown-item" id="miToolPencil">Pencil Settings...</button></li>
+        <li><button class="dropdown-item" id="miToolBrush">Brush Settings...</button></li>
+        <li><button class="dropdown-item" id="miToolSpray">Spray Settings...</button></li>
+        <li><button class="dropdown-item" id="miToolFixedSelect">Fixed Selection Settings...</button></li>
+        <li><button class="dropdown-item" id="miToolText">Text Settings...</button></li>
+      </ul>
+    </div>
+    <div class="dropdown me-1">
+      <button class="btn mac-menu-btn dropdown-toggle" data-bs-toggle="dropdown">Image</button>
+      <ul class="dropdown-menu mac-dropdown">
+        <li><button class="dropdown-item" id="miFlipH">Flip H</button></li>
+        <li><button class="dropdown-item" id="miFlipV">Flip V</button></li>
+        <li><button class="dropdown-item" id="miResize">Resize / Convert Mode...</button></li>
+      </ul>
+    </div>
+    <div class="dropdown me-1">
+      <button class="btn mac-menu-btn dropdown-toggle" data-bs-toggle="dropdown">Filters</button>
+      <ul class="dropdown-menu mac-dropdown">
+        <li><button class="dropdown-item filter-item" data-filter="orderedDither">Ordered Dither</button></li>
+        <li><button class="dropdown-item filter-item" data-filter="outline">Edge Outline</button></li>
+        <li><button class="dropdown-item filter-item" data-filter="checkerShade">Checker Shade</button></li>
+        <li><button class="dropdown-item filter-item" data-filter="invertPalette">Invert Colors</button></li>
+        <li><button class="dropdown-item filter-item" data-filter="lowPass">Low-pass</button></li>
+        <li><button class="dropdown-item filter-item" data-filter="highPass">High-pass</button></li>
+        <li><button class="dropdown-item filter-item" data-filter="posterize2">Posterize 2-step</button></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><button class="dropdown-item" id="miBrightness">Brightness / Contrast...</button></li>
+      </ul>
+    </div>
+    <div class="dropdown me-1">
+      <button class="btn mac-menu-btn dropdown-toggle" data-bs-toggle="dropdown">Grid</button>
+      <ul class="dropdown-menu mac-dropdown">
+        <li><button class="dropdown-item" id="miGrid">Toggle Grid</button></li>
+        <li><button class="dropdown-item" id="miSnap">Snap to Grid</button></li>
+        <li><button class="dropdown-item" id="miGridSize">Grid Size...</button></li>
+      </ul>
+    </div>
+    <div class="dropdown me-1">
+      <button class="btn mac-menu-btn dropdown-toggle" data-bs-toggle="dropdown">Display</button>
+      <ul class="dropdown-menu mac-dropdown">
+        <li><button class="dropdown-item" id="miDispRGB">Monitor: Analog RGB</button></li>
+        <li><button class="dropdown-item" id="miDispComposite">Monitor: Composite</button></li>
+        <li><button class="dropdown-item" id="miDispArtifact">Monitor: TV</button></li>
+        <li><button class="dropdown-item" id="miDispMonoWhite">Monitor: Monochrome White</button></li>
+        <li><button class="dropdown-item" id="miDispMonoGreen">Monitor: Monochrome Green</button></li>
+        <li><button class="dropdown-item" id="miDispMonoAmber">Monitor: Monochrome Amber</button></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><button class="dropdown-item" id="miAspectModern">Window: True Ratio</button></li>
+        <li><button class="dropdown-item" id="miAspectCoco">Window: Fixed Ratio</button></li>
+      </ul>
+    </div>
+    
+      <div class="dropdown me-1">
+      <button class="btn mac-menu-btn dropdown-toggle" data-bs-toggle="dropdown">Help</button>
+      <ul class="dropdown-menu mac-dropdown">
+        <li><button class="dropdown-item" id="miAbout">About Kroma Paint</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="d-flex flex-grow-1 min-vh-0 overflow-hidden">
+    <aside class="dock p-2 overflow-auto">
+      <div class="accordion" id="leftAccordion">
+        <div class="accordion-item mac-accordion-item">
+          <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accInfo">Information</button></h2>
+          <div id="accInfo" class="accordion-collapse collapse show">
+            <div class="accordion-body py-2 px-3">
+              <div class="infoRow"><span>Image</span><span id="infoImage">320 × 192</span></div>
+              <div class="infoRow"><span>Colors</span><span id="infoColors">16</span></div>
+              <div class="infoRow"><span>Display</span><span id="infoDisplay">RGB</span></div>
+              <div class="infoRow"><span>Layers</span><span id="infoLayers">1</span></div>
+              <div class="infoRow"><span>Grid</span><span id="infoGrid">Off</span></div>
+              <div class="infoRow"><span>Selection</span><span id="infoSelection">—</span></div>
+              <div class="infoRow"><span>Memory</span><span id="infoMemory">—</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item mac-accordion-item">
+          <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accTools">Tools</button></h2>
+          <div id="accTools" class="accordion-collapse collapse show">
+            <div class="accordion-body py-2 px-2">
+              <div id="toolGrid" class="tool-grid"></div>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item mac-accordion-item">
+          <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accColors">Colors</button></h2>
+          <div id="accColors" class="accordion-collapse collapse show">
+            <div class="accordion-body py-2 px-3">
+              <div class="d-flex align-items-end gap-3 mb-2 fg-bg-row">
+                <div><div class="small text-muted">FG</div><div id="fgSwatch" class="big-swatch"></div></div>
+                <button class="btn mac-icon-btn align-self-end" id="swapFG" title="Swap"><i class="fa-solid fa-right-left"></i></button>
+                <div><div class="small text-muted">BG</div><div id="bgSwatch" class="big-swatch"></div></div>
+              </div>
+              <div id="paletteBar" class="palette-bar"></div>
+              <button class="btn mac-btn mt-2 w-100" id="btnSelectColors">Manage Colors</button>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item mac-accordion-item">
+          <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accPatterns">Patterns</button></h2>
+          <div id="accPatterns" class="accordion-collapse collapse show">
+            <div class="accordion-body py-2 px-3">
+              <div class="btn-group w-100 mb-2" role="group" aria-label="Paint source">
+                <button class="btn mac-btn paint-source-btn active" id="btnPaintFG">Use Foreground</button>
+                <button class="btn mac-btn paint-source-btn" id="btnPaintPattern">Use Pattern</button>
+              </div>
+              <div id="patternBar" class="pattern-bar"></div>
+              <button class="btn mac-btn mt-2 w-100" id="btnManagePatterns">Manage Patterns</button>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item mac-accordion-item">
+          <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accLayers">Layers</button></h2>
+          <div id="accLayers" class="accordion-collapse collapse show">
+            <div class="accordion-body py-2 px-3">
+              <div id="layerList" class="d-flex flex-column gap-2"></div>
+              <div class="d-flex gap-2 mt-2 layer-toolbar">
+                <button class="btn mac-icon-btn flex-fill" id="btnLayerAdd" title="Add Layer"><i class="fa-solid fa-plus"></i></button>
+                <button class="btn mac-icon-btn flex-fill" id="btnLayerDelete" title="Delete Layer"><i class="fa-solid fa-trash"></i></button>
+                <button class="btn mac-icon-btn flex-fill" id="btnLayerMerge" title="Merge Down"><i class="fa-solid fa-down-left-and-up-right-to-center"></i></button>
+                <button class="btn mac-icon-btn flex-fill" id="btnLayerFlatten" title="Flatten"><i class="fa-solid fa-layer-group"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <input type="file" id="projectOpen" accept=".json,.c3p" hidden>
+      <input type="file" id="paletteOpen" accept=".json" hidden>
+      <input type="file" id="patternsOpen" accept=".json" hidden>
+      <input type="file" id="imageOpen" hidden>
+    </aside>
+
+    <main class="workspace d-flex flex-column flex-grow-1 min-vh-0">
+      <div class="canvas-header px-3 py-2 d-flex align-items-center gap-3">
+        <div id="docTitle" class="doc-title" title="Click to rename">Untitled</div>
+      </div>
+      <div id="canvasWrap" class="canvas-wrap flex-grow-1 position-relative overflow-auto">
+        <div id="canvasCenter" class="canvas-center position-relative">
+          <canvas id="view" width="320" height="192"></canvas>
+          <canvas id="overlay" width="320" height="192"></canvas>
+        </div>
+      </div>
+      <div class="bottom-bar px-3 py-2 d-flex align-items-center gap-2">
+        <button class="btn mac-icon-btn" id="zoomOut"><i class="fa-solid fa-minus"></i></button>
+        <div id="zoomPct" class="small fw-semibold">200%</div>
+        <button class="btn mac-icon-btn" id="zoomIn"><i class="fa-solid fa-plus"></i></button>
+        <div class="vr mx-1"></div>
+        <div id="statusCoords" class="small text-muted">X:0 Y:0</div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="modal fade" id="newModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content mac-modal">
+      <div class="modal-header"><h5 class="modal-title">Create New Image</h5></div>
+      <div class="modal-body">
+        <div class="mb-3"><label class="form-label">Resolution</label><select id="newRes" class="form-select"></select></div>
+        <div class="mb-3"><label class="form-label">Colors</label><select id="newDepth" class="form-select"></select></div>
+        <div class="mb-1"><label class="form-label">Display Mode</label><select id="newDisplay" class="form-select"><option value="rgb">RGB</option><option value="composite">Composite</option><option value="artifact">Composite Artifact</option></select></div>
+        <div class="small text-muted" id="modeHelp"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn mac-btn" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn mac-primary-btn" id="btnNewCreate">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="savePromptModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content mac-modal">
+      <div class="modal-header"><h5 class="modal-title">Save Changes?</h5></div>
+      <div class="modal-body">Your current image has unsaved changes.</div>
+      <div class="modal-footer">
+        <button class="btn mac-btn" id="btnSavePromptCancel">Cancel</button>
+        <button class="btn mac-btn" id="btnSavePromptDiscard">Discard</button>
+        <button class="btn mac-primary-btn" id="btnSavePromptSave">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="diskModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+    <div class="modal-content mac-modal">
+      <div class="modal-header"><h5 class="modal-title">DSK Image Browser</h5></div>
+      <div class="modal-body"><div class="small text-muted mb-2">Supported inside DSK: MGE, HRS / HR, RAT, VEF, CM3</div><div id="diskList" class="d-flex flex-column gap-2"></div></div>
+      <div class="modal-footer"><button class="btn mac-btn" data-bs-dismiss="modal">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="paletteModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+    <div class="modal-content mac-modal">
+      <div class="modal-header"><h5 class="modal-title">Manage Colors</h5></div>
+      <div class="modal-body">
+        <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+          <select id="presetPalette" class="form-select form-select-sm palette-preset-select"></select>
+          <button class="btn mac-btn" id="btnPaletteSave">Save Palette</button>
+          <button class="btn mac-btn" id="btnPaletteLoad">Load Palette</button>
+          <div class="small text-muted">Click a slot, then click a CoCo color. Click two slots to spread between them.</div>
+        </div>
+        <div class="row g-3 mb-3">
+          <div class="col-lg-6">
+            <div class="small text-muted mb-2">RGB</div>
+            <div class="slider-row"><label for="rRange">R</label><input id="rRange" class="form-range" type="range" min="0" max="3" value="0"><span id="rVal">0</span></div>
+            <div class="slider-row"><label for="gRange">G</label><input id="gRange" class="form-range" type="range" min="0" max="3" value="0"><span id="gVal">0</span></div>
+            <div class="slider-row"><label for="bRange">B</label><input id="bRange" class="form-range" type="range" min="0" max="3" value="0"><span id="bVal">0</span></div>
+          </div>
+          <div class="col-lg-6">
+            <div class="small text-muted mb-2">HSV / HEX</div>
+            <div class="slider-row"><label for="hRange">H</label><input id="hRange" class="form-range" type="range" min="0" max="360" value="0"><span id="hVal">0</span></div>
+            <div class="slider-row"><label for="sRange">S</label><input id="sRange" class="form-range" type="range" min="0" max="100" value="0"><span id="sVal">0</span></div>
+            <div class="slider-row"><label for="vRange">V</label><input id="vRange" class="form-range" type="range" min="0" max="100" value="0"><span id="vVal">0</span></div>
+            <div class="mt-2"><label class="form-label small mb-1" for="hexInput">HEX</label><input id="hexInput" class="form-control form-control-sm" type="text" value="#000000"></div>
+          </div>
+        </div>
+        <div id="allColorGrid" class="all-color-grid mb-3"></div>
+        <div class="small text-muted mb-1">Active slots</div>
+        <div id="slotPickerBar" class="palette-bar"></div>
+      </div>
+      <div class="modal-footer"><button class="btn mac-primary-btn" data-bs-dismiss="modal">Done</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="patternsModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+    <div class="modal-content mac-modal">
+      <div class="modal-header"><h5 class="modal-title">Manage Patterns</h5></div>
+      <div class="modal-body">
+        <div class="d-flex flex-wrap gap-3 align-items-start">
+          <div class="flex-grow-1 minw-0">
+            <div id="patternPickerGrid" class="pattern-manage-grid mb-3"></div>
+            <div class="d-flex gap-2 mb-2"><select id="patternSetSelect" class="form-select form-select-sm"><option value="default">Default Patterns</option><option value="macpaint">MacPaint</option><option value="scottish">Scottish Patches</option><option value="rpg">RPG Terrain</option><option value="natural">Natural Elements</option><option value="scifi">Sci-Fi</option></select></div><div class="d-flex gap-2">
+              <button class="btn mac-btn" id="btnPatternsSave">Save Patterns</button>
+              <button class="btn mac-btn" id="btnPatternsLoad">Load Patterns</button>
+            </div>
+          </div>
+          <div class="pattern-editor-wrap">
+            <canvas id="patternEditor" width="128" height="128"></canvas>
+            <div id="patternPreview4x4" class="pattern-preview-grid mt-2"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="btn mac-primary-btn" data-bs-dismiss="modal">Done</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="gridSizeModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content mac-modal"><div class="modal-header"><h5 class="modal-title">Grid</h5></div><div class="modal-body"><div class="row g-2"><div class="col-6"><label class="form-label">Horizontal</label><input id="gridSizeInputX" class="form-control" type="number" min="1" value="8"></div><div class="col-6"><label class="form-label">Vertical</label><input id="gridSizeInputY" class="form-control" type="number" min="1" value="8"></div><div class="col-12"><label class="form-label">Grid Color</label><input id="gridColorInput" class="form-control form-control-color" type="color" value="#808080"></div></div></div><div class="modal-footer"><button class="btn mac-btn" data-bs-dismiss="modal">Cancel</button><button class="btn mac-primary-btn" id="btnGridSizeApply">Apply</button></div></div></div>
+</div>
+
+<div class="modal fade" id="resizeModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content mac-modal"><div class="modal-header"><h5 class="modal-title">Resize / Convert Mode</h5></div><div class="modal-body"><div class="mb-3"><label class="form-label">Target mode</label><select id="resizeMode" class="form-select"></select></div><div class="mb-0"><label class="form-label">Algorithm</label><select id="resizeAlgo" class="form-select"><option value="nearest">Nearest neighbor</option><option value="box">Box sample</option></select></div></div><div class="modal-footer"><button class="btn mac-btn" data-bs-dismiss="modal">Cancel</button><button class="btn mac-primary-btn" id="btnResizeApply">Apply</button></div></div></div>
+</div>
+
+<div class="modal fade" id="bcModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content mac-modal"><div class="modal-header"><h5 class="modal-title">Brightness / Contrast</h5></div><div class="modal-body"><label class="form-label">Brightness</label><input id="brightnessRange" class="form-range" type="range" min="-100" max="100" value="0"><label class="form-label">Contrast</label><input id="contrastRange" class="form-range" type="range" min="-100" max="100" value="0"></div><div class="modal-footer"><button class="btn mac-btn" data-bs-dismiss="modal">Cancel</button><button class="btn mac-primary-btn" id="btnBCApply">Apply</button></div></div></div>
+</div>
+
+
+<div class="modal fade" id="pencilModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content mac-modal"><div class="modal-header"><h5 class="modal-title">Pencil</h5></div><div class="modal-body"><div class="slider-row"><label for="pencilSizeRange">Size</label><input id="pencilSizeRange" class="form-range" type="range" min="1" max="12" value="1"><span id="pencilSizeVal">1 px</span></div></div><div class="modal-footer"><button class="btn mac-btn" data-bs-dismiss="modal">Close</button></div></div></div></div>
+<div class="modal fade" id="brushModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content mac-modal"><div class="modal-header"><h5 class="modal-title">Brush</h5></div><div class="modal-body"><label class="form-label">Shape</label><select id="brushShape" class="form-select mb-3"><option value="square">Square</option><option value="round">Round</option><option value="oval">Oval</option><option value="slanted">Slanted Line</option></select><div class="slider-row"><label for="brushSize">Size</label><input id="brushSize" class="form-range" type="range" min="1" max="24" value="1"><span id="brushSizeVal">1 px</span></div></div><div class="modal-footer"><button class="btn mac-btn" data-bs-dismiss="modal">Close</button></div></div></div></div>
+<div class="modal fade" id="sprayModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content mac-modal"><div class="modal-header"><h5 class="modal-title">Spray Can</h5></div><div class="modal-body"><div class="slider-row"><label for="sprayDensity">Density</label><input id="sprayDensity" class="form-range" type="range" min="1" max="100" value="40"><span id="sprayDensityVal">40</span></div><div class="slider-row"><label for="spraySize">Size</label><input id="spraySize" class="form-range" type="range" min="1" max="24" value="6"><span id="spraySizeVal">6 px</span></div></div><div class="modal-footer"><button class="btn mac-btn" data-bs-dismiss="modal">Close</button></div></div></div></div>
+<div class="modal fade" id="fixedSelModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content mac-modal"><div class="modal-header"><h5 class="modal-title">Fixed Selection</h5></div><div class="modal-body"><div class="row g-2"><div class="col-6"><label class="form-label">Width</label><input id="fixedSelW" class="form-control" type="number" min="1" value="16"></div><div class="col-6"><label class="form-label">Height</label><input id="fixedSelH" class="form-control" type="number" min="1" value="16"></div></div></div><div class="modal-footer"><button class="btn mac-btn" data-bs-dismiss="modal">Close</button></div></div></div></div>
+<div class="modal fade" id="textModal" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content mac-modal"><div class="modal-header"><h5 class="modal-title">Text</h5></div><div class="modal-body"><div class="row g-2"><div class="col-md-4"><label class="form-label">Font</label><select id="textFont" class="form-select"><option>Arial</option><option>Verdana</option><option>Georgia</option><option>Courier New</option><option>Times New Roman</option><option>Tahoma</option></select></div><div class="col-md-2"><label class="form-label">Size</label><input id="textSize" class="form-control" type="number" min="6" max="96" value="16"></div><div class="col-md-3"><label class="form-label">Style</label><select id="textStyle" class="form-select"><option value="normal">Normal</option><option value="bold">Bold</option><option value="italic">Italic</option><option value="underline">Underlined</option></select></div><div class="col-md-3"><label class="form-label">Align</label><select id="textAlign" class="form-select"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></div><div class="col-12"><label class="form-label">Text</label><textarea id="textInput" class="form-control" rows="4">TEXT</textarea></div></div></div><div class="modal-footer"><button class="btn mac-btn" data-bs-dismiss="modal">Close</button></div></div></div></div>
+
+<div class="modal fade" id="exportModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content mac-modal"><div class="modal-header"><h5 class="modal-title">Export Image</h5></div><div class="modal-body"><div class="mb-3"><label class="form-label">Format</label><select id="exportFormat" class="form-select"><option value="png">PNG</option><option value="bmp">BMP</option><option value="rawbin">Raw Indexed BIN</option><option value="coco-128x192x16">CoCo 3 128×192×16</option><option value="coco-160x192x16">CoCo 3 160×192×16</option><option value="coco-256x192x4">CoCo 3 256×192×4</option><option value="coco-320x192x4">CoCo 3 320×192×4</option><option value="coco-512x192x2">CoCo 3 512×192×2</option><option value="coco-640x192x2">CoCo 3 640×192×2</option></select></div><div class="mb-3"><label class="form-label">Destination</label><select id="exportDestination" class="form-select"><option value="filesystem">Computer file system</option><option value="dsk">Selected CoCo disk / image</option></select><div class="form-text">DSK write support is still limited in this build.</div></div><div class="mb-0"><label class="form-label">Filename</label><input id="exportFilename" class="form-control" type="text" value="Untitled"></div></div><div class="modal-footer"><button class="btn mac-btn" data-bs-dismiss="modal">Cancel</button><button class="btn mac-primary-btn" id="btnExportApply">Export</button></div></div></div></div>
+<div class="modal fade" id="aboutModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content mac-modal"><div class="modal-header"><h5 class="modal-title">Help</h5></div><div class="modal-body"><div class="fw-bold">Kroma Paint v1.0.8</div><div>Copyright © 2026 Carlos Camacho</div><div class="text-muted small mt-2">Retro indexed paint editor for TRS-80 Color Computer 3 workflows.</div><div class="mt-2">A paint editor for TRS-80 Color Computer 3 game developers.</div></div><div class="modal-footer"><button class="btn mac-primary-btn" data-bs-dismiss="modal">OK</button></div></div></div></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/bundle.js"></script>
+</body>
+</html>
